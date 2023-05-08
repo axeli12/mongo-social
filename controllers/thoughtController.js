@@ -39,6 +39,54 @@ async createThought(req, res) {
             { $push: { thoughts: thought._id } },
             { new: true }
         );
+        if (!users) {
+            return res.status(404).json({
+                message: 'Thought created no user found '
+            });
+        }
+    } catch (err) {
+        res.status(500).json(err)
+    }
+},
+async updateThought(req, res) {
+    try {
+        const thought = await thoughts.findOneAndUpdate(
+            { _id: req.params.thoughtId },
+            { $set: req.body },
+        );
+        if (!thought) {
+            return res.status(404).json({ message: 'Theres is no thought' })
+        }
+        res.json({ message: 'Thought has been Updated!' })
+    } catch (err) {
+        res.status(500).json(err)
+    }
+},
+async deleteThought(req, res) {
+    try {
+        const thought = await thoughts.findOneAndRemove(
+            { _id: req.params.thoughtId }
+        )
+        if(!thought) {
+            return res.status(404).json({ message: 'There is no thought' })
+        }
+        res.json({ message: 'Thought has been deleted!'})
+    } catch (err) {
+        res.status(500).json(err)
+    }
+} ,
+async addReaction(req, res) {
+    try {
+        const thought = await thoughts.findOneAndUpdate(
+        { _id: req.params.thoughtId },
+        { $addToSet : { reactions: req.body } }
+        )
+        if (!thought) {
+            return res.status(404).json({ message: 'No thought with that id found'})
+        }
+        res.json(thought)
+    } catch (err) {
+        res.status(500).json(err)
     }
 }
 }
