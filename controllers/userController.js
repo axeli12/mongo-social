@@ -1,7 +1,7 @@
 const { user, thoughts } = require('../models');
 
 module.exports = {
-    
+
 async getUsers(req, res) {
     try {
         const users = await user.find();
@@ -15,7 +15,7 @@ async getUsers(req, res) {
 
 async getOneUser(req, res) {
     try {
-      const users = await user.findOne({ _id: req.params.userId })
+      const users = await user.findOne({ _id: req.params.usersId })
         .select('-__v');
 
       if (!users) {
@@ -31,7 +31,7 @@ async getOneUser(req, res) {
 
   async deleteUser(req, res) {
     try {
-        const users = await user.findOneRemove({ _id: req.params.userId })
+        const users = await user.findOneRemove({ _id: req.params.usersId })
 
         if (!users) {
             return res.status(404).json({ message: 'No user found' })
@@ -53,4 +53,56 @@ async getOneUser(req, res) {
         return res.status(500).json(err);
       }
   },
+
+  async addFriend(req, res) {
+    try {
+        const users = await user.findOneAndUpdate(
+            { _id: req.params.usersId },
+            { $push: { friends: req.params,friendId } },
+            { runValidators: true, new: true }
+        )
+        if (!users) {
+            return res.status(404).json({ message: 'No user found' })
+        }
+        res.json(users)
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json(err);
+      }
+  },
+
+  async deleteFriend(req, res) {
+    try {
+        const users = await user.findOneAndUpdate(
+            { _id: req.params.usersId },
+            { $pull: { friends: req.params.friendId }},
+            { runValidators: true, new: true }
+
+        )
+
+        if (!users) {
+            return res.status(404).json({ message: 'No user found'})
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json(err);
+      }
+  },
+
+  async updateUser(req, res) {
+    try {
+        const users = await user.findOneAndUpdate( 
+            { _id: req.params.usersId },
+            { $set: req.body }
+        )
+        if (!users) {
+            return res.status(404).json({ message: 'There is no user'})
+        }
+        res.json({ message: 'User has been updated'})
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json(err);
+      }
+  },
+
 }
