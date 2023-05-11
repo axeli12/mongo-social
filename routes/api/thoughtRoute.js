@@ -12,7 +12,7 @@ router.route('/').get(getThoughts).post(createThought);
 // one thought by id
 router.route('/:id').get(getThoughtById).put(updateThought).delete(deleteThought);
 // adds reacion by id
-router.route(':thoughtsId/reactions').post(addReaction);
+router.route(':/thoughtsId/reactions').post(addReaction);
 // deletes one reaction by id
 router.route('/:thoughtsId/reactions/:reactionId').delete(deleteThought);
 
