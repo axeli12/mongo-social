@@ -31,7 +31,7 @@ async getUserById(req, res) {
 
   async deleteUser(req, res) {
     try {
-        const users = await user.findOneRemove({ _id: req.params.userId })
+        const users = await user.findOneAndRemove({ _id: req.params.userId })
 
         if (!users) {
             return res.status(404).json({ message: 'No user found' })
