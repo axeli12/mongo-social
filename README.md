@@ -26,5 +26,9 @@ npm start (to start the backend app)
 
 ## Video
 
+https://github.com/axeli12/mongo-social/assets/103465115/d55cacc5-30fd-4c3f-b39b-6da9d867018e
+
+
+
 ## Contributions
 n/a
