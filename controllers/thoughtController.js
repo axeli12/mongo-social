@@ -1,4 +1,3 @@
-const { json } = require('express');
 const { thoughts, user } = require('../models')
 
 module.exports = {
@@ -15,15 +14,15 @@ module.exports = {
         };
     },
 
-async getOneThought(req, res) {
+async getThoughtById(req, res) {
     try {
-        const thought = await thoughts.findOne({ _id: req.params.thoughtid })
+        const thought = await thoughts.findOne({ _id: req.params.thoughtId })
         .select('-__v');
 
         if (!thought) {
-            return res.status(404).json({ message: 'There is no though with tha Id'})
+            return res.status(404).json({ message: 'There is no thought with tha Id'})
         }
-        res,json({ thought })
+        res.json({ thought })
         } catch (err) {
             console.log(err);
             return res.status(500).json(err);
